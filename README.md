@@ -1,4 +1,5 @@
 # About
+
   A multi-purpose image capturing and composition tool written in Java for capturing web pages into one large seamless panorama. There are browser-based plugin tools like Full Page Screen Capture chrome extension and many more available free or commercially, but I personally feel they are limiting in feature set and particularly not suited to my taste since I would like to continuously integrate a set of features available into the toolkit.
 
   I created this tool during my spare time in the senior year, partly due to my desire to expand my knowledge on Java language itself, and also because seeing my creation with that level of complexity comes into fruition brings such a joy. In addition, in this day and age where a massive data is available on the web, it would be nice to have a tool that allows you to gather that text data in the form of images, since they can be of a good use to image-to-text processing Deep Learning tasks that I have in mind. 
@@ -25,5 +26,15 @@ As a desktop application, there are a couple of technologies involved in this pr
 
 # How it works?
 
+As the saying "A picture says a thousand words" goes, I would have you watch the application in action.
+
 [![Snatcher](http://img.youtube.com/vi/yAPAQbPtAt4/0.jpg)](https://www.youtube.com/watch?v=yAPAQbPtAt4 "Snatcher")
 
+
+
+
+# Requirements
+
+- Java 8
+- Make sure "Drivers" folder is intact with "chromedriver.exe" and "geckodriver.exe" inside.
+- All the necessary library files for Selenium and OpenCV are supplied with the application. So no futher steps required!
