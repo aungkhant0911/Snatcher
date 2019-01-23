@@ -7,15 +7,15 @@
 # Technologies Used
 As a desktop app, there are a couple of technologies involved in this project:
 
-- JavaFX
+- **JavaFX**
   - for GUI and area selection on webpage
   
-- JavaScript
-  it is used as the main driving engine that allows to control many aspects of webpage
+- **JavaScript**
+  - it is used as the main driving engine that allows to control many aspects of webpage
   
-- Selenium WebDriver
-  an opencesource browser automation framework that allows to test and automate browser functionalities
+- **Selenium WebDriver**
+  - an opencesource browser automation framework that allows to test and automate browser functionalities
   
-- OpenCV/JavaCV
-  for stitching and composing images with a rich set of image processing features
+- **OpenCV/JavaCV**
+  - for stitching and composing images with a rich set of image processing features
 
