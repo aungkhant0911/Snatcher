@@ -33,7 +33,7 @@ public interface SnatcherInterface {
     // name of final panorama image
     public static final String FILANAME = "pano";
     // how fast can we scroll and capture, in milliseconds
-    public static final int capture_speed = 700;
+    public static final int capture_speed = 1000;
     
     
     // produce final panorama

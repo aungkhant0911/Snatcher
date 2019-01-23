@@ -61,12 +61,11 @@ public class PartialSnatcher extends FullSnatcher{
         img = ImageUtility.convertBufferedCMYKToRGB(img);
         imgs_list.add(img);        
         
-        while((res = (int) WebController.getScrollable(page)) > 0) {
+        while((res = (int) WebController.getScrollable(page)) > 0) {            
             
-            takeANap(500);
             residual_height = res;
             WebController.scrollByHeight(page, capture_height);
-            takeANap(500);
+            takeANap(capture_speed);
             img = robot.createScreenCapture(new Rectangle( dimension[0], dimension[1], dimension[2], dimension[3]));    
             img = ImageUtility.convertBufferedCMYKToRGB(img);
             imgs_list.add(img);

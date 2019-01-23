@@ -1,8 +1,14 @@
-import java.io.File;
+/*
+ Program entry point. Snatcher is the main GUI window.
+*/
 import org.openqa.selenium.WebDriver;
+import org.bytedeco.javacpp.opencv_core.Mat;
+
+import java.io.File;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import javafx.application.Application;
 import javafx.event.EventType;
 import javafx.geometry.Insets;
@@ -14,7 +20,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
-import org.bytedeco.javacpp.opencv_core.Mat;
+
 
 /**
  *
@@ -31,7 +37,9 @@ public class Snatcher extends Application {
     
     public static void main(String[] args)  {
         
+        //create directories before launching GUI
         createDirectoryStructure();
+        //make sure chrome driver is registered
         WebController.registerWebDriver();
         launch(args);
     }
@@ -48,7 +56,7 @@ public class Snatcher extends Application {
     }
     
     
-    
+    // set up layout for the main GUI, buttons, etc..
     private void setupGUI(Stage stage) {        
         
         VBox vb = new VBox(15);
@@ -73,20 +81,21 @@ public class Snatcher extends Application {
     
     
     
-    
+    // Star Browser button
     private void registerBrowserStartAction() {   
         
         bbrowser.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {             
             bbrowser.setDisable(true);
             bfull.setDisable(false);
-            bpartial.setDisable(false);            
+            bpartial.setDisable(false); 
+            // open browser
             browser = WebController.getBrowser();
         });
     }
     
     
     
-    
+    // Full Capture button. Run FullSnatcher
     private void registerFullSnatcherAction() {
         
         bfull.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> { 
@@ -97,17 +106,17 @@ public class Snatcher extends Application {
     }
     
     
-    
+    // Partial Capture button. Run PartialSnatcher
     private void registerPartialSnatcherAction(Stage stage) {
         
         bpartial.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> { 
-            
+                    // assign to functional interface the task we want  SelectionWindow to execute
                     DelegatedTask task = (int[] d) -> {   
                         SnatcherInterface sncr = new PartialSnatcher(browser, d, true);
                         Mat panorama = sncr.producePanorama();
                         new Thread(() -> sncr.savePanoramAsImage(panorama)).start();
                     };
-                    
+                    // start selection window for user to specify the area with rectangular window
                     SelectionWindow window = new SelectionWindow(task, stage );
                     window.show();
         });                    

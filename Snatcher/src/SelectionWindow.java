@@ -1,7 +1,9 @@
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.animation.PauseTransition;
+import javafx.application.Platform;
 import javafx.scene.Cursor;
+import javafx.scene.Group;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.KeyCode;
@@ -67,7 +69,8 @@ public class SelectionWindow extends Stage {
         setAlwaysOnTop(true);
                
         pane.setStyle("-fx-background-color:rgb(0,0,0,0.05);");
-        pane.getChildren().add(canvas);
+        pane.getChildren().add(canvas); 
+        
         setScene(new Scene(pane, Color.TRANSPARENT));        
         getScene().setCursor(Cursor.CROSSHAIR);
        
@@ -121,10 +124,8 @@ public class SelectionWindow extends Stage {
     
 
     /**
-     * Calculates the width and height of the rectangle.
-     *
-     * @param w the w
-     * @param h the h
+     * Assign width and height of the selection
+     
      */
     private final void calculateWidthAndHeight(int w, int h) {
         width = w;
@@ -134,10 +135,7 @@ public class SelectionWindow extends Stage {
     
 
     /**
-     * Return an array witch contains the (UPPER_LEFT) Point2D of the rectangle
-     * and the width and height of the rectangle.
-     *
-     * @return the int[]
+     Return array in this format (x,y,width,height) of the section window.
      */
     public int[] getDimension() {
 
@@ -153,31 +151,36 @@ public class SelectionWindow extends Stage {
     }
     
     
+    /*
+     Return array in this format (x,y,width,height) of the section window (excluding the frame/boundary).
+     */
     public int [] getDimensionWithoutFrame() {
         
         int[] d = getDimension();
         return new int[] { d[0] + 2, d[1] + 2, d[2] - 5, d[3] - 5 };
     }
     
-    
+    /*
+     Press C to capture, M to collapse the main GUI and ESCAPE to cancel the selection window
+    */
     private void registerKeyBindings() {
         
         getScene().setOnKeyReleased(key -> {   
             
-            if (key.getCode() == KeyCode.C) {
-                
+            if (key.getCode() == KeyCode.C) {                
                 pane.getChildren().remove(1);
                 resizeToWorkingArea();
-                
+                // give it sometimes to shrink the stage to selection window size to not
+                // take up the whole screen.
                 PauseTransition pause = new PauseTransition(Duration.seconds(1));
-                pause.setOnFinished(event -> {
-                       task.executeTask(getDimensionWithoutFrame());                
-                       close();
+                pause.setOnFinished(event -> {                       
+                        task.executeTask(getDimensionWithoutFrame());                
+                        close();
                 });
                 pause.play();
                 
-                
             } else if(key.getCode() == KeyCode.M) {
+                // if the main GUI is hidden, brought it back. Otherwise hide it.
                 parentStage.setIconified(!parentStage.isIconified());
                 this.toFront();
                 
@@ -186,13 +189,13 @@ public class SelectionWindow extends Stage {
         });
     }
     
-    
+    // register mouse events
     private void registerDrawing() {        
         
         canvas.setOnMousePressed(m -> {
             if(pane.getChildren().size() > 1)
                 pane.getChildren().remove(1);
-            
+            // get the starting x,y position of selection window
             x1 = (int) m.getScreenX();
             y1 = (int) m.getScreenY();
         });
@@ -201,21 +204,26 @@ public class SelectionWindow extends Stage {
         canvas.setOnMouseDragged(m -> {
             x2 = (int) m.getScreenX();
             y2 = (int) m.getScreenY();
+            // while dragging keep redrawing the selection window on the canvas
             repaintCanvas();
         });
                
         
+        // Once done drawing, show the text in the middle of selection window.
          canvas.setOnMouseReleased(m -> {
             displayTips();
         });
     }
     
     
+    // resize the transparent that is blocking the whole screnn to selection window size
     private void resizeToWorkingArea() {
         
         int[] dimension = getDimension();
-        
+        // move Pane (which hold canvas) to make it appears as if canvas and stage window are just fit
+        // very smart move
         pane.relocate(-dimension[0], -dimension[1]);
+        // now shrink down stage to fit selection window.
         this.setX(dimension[0]);
         this.setY(dimension[1]);
         this.setWidth(dimension[2]);
@@ -224,26 +232,29 @@ public class SelectionWindow extends Stage {
     
     
     
-    
+    // show the press M...press C text in the middle of selection window.
     private void displayTips() { 
-        
+        // don't show the text if the label box is smaller than the selection window itself
         if(Math.abs(x1 - x2) < tip.getWidth() || Math.abs(y1 - y2) < tip.getHeight())
             return;
         
         if(pane.getChildren().size() <= 1)            
             pane.getChildren().add(tip);
-               
+        // this is kinda weird. You can't know the size of text/label box's size, untill they are renendred
+        // In order to know its actual size before rendering, you need to put these two lines of code.
+        // otherwise the size will always be 0. Something weired about JavaFX
         pane.applyCss();
         pane.layout();
        
         Label press_c = (Label) pane.getChildren().get(1); 
         int[] dimension = getDimension();
+        // x_pos and y_pos determines the x and y of label box.
         double x_pos = dimension[0] + (dimension[2] / 2) - (press_c.getWidth() / 2);        
         double y_pos = dimension[1] + (dimension[3] / 2) - (press_c.getHeight() / 2);
         
         //make it appear in the middle of SelectionWIndow
         press_c.relocate( x_pos  , y_pos);
-        //make it appear on top of of SelectionWIndow
+        //make it appear at the top of of SelectionWIndow
         //press_c.relocate( x_pos  , dimension[1] + 5); 
     }
     
@@ -252,7 +263,7 @@ public class SelectionWindow extends Stage {
     
     private void buildTips() {
         
-        tip = new Label("Press C to capture\nPress M to minimize the GUI");
+        tip = new Label("Press C to capture\nPress M to minimize the GUI\nPress Esc to cancel");
         tip.setStyle("-fx-background-color: black");
         tip.setFont(Font.font("times new roman", 18));
         tip.setTextFill(Color.WHITE);
