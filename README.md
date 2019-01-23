@@ -24,7 +24,7 @@ As a desktop application, there are a couple of technologies involved in this pr
 
 
 
-# How it works?
+# How It Works?
 
 As the saying "A picture says a thousand words" goes, I would have you watch the application in action.
 
@@ -38,3 +38,32 @@ As the saying "A picture says a thousand words" goes, I would have you watch the
 - Java 8
 - Make sure "Drivers" folder is intact with "chromedriver.exe" and "geckodriver.exe" inside.
 - All the necessary library files for Selenium and OpenCV are supplied with the application. So no futher steps required!
+
+
+
+# Known Bugs And A Note To User
+
+- When using the browser initiated by the Snatcher:
+  - Use the very first default tab to navigate and do the capturing. Closing the default tab means restarting the browser.
+  - Currently more than one tab is not supported. The application will only use the first tab.
+  
+- Though Partial Snatcher allows user to leave focus off the application during capturing process, it may leave black selection         window, resulting in subsequent captured images as pitch black.
+
+
+
+# Future Release
+
+The following are intended in the future releases in no particular order.
+
+- Bug fixes
+
+- Support for PDF version of pano
+
+- Image-to-Text translation for PDF version rather than just converting images to PDF
+
+- Support for parallel multiple tab capturing for full page capturing
+
+- Queueing multiple work orders for full page capturing
+
+- Support for feature to select and supress/delete away blocking or annoying webelement/div tag/iframes etc.. from a page
+  - This feature is similar to Inspect Element of major browsers ( right-click on a page). But they are non-programmer friendly. The version of this feature supported will be as simple as point and click.
