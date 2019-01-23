@@ -59,11 +59,11 @@ The following are intended in the future releases in no particular order.
 
 - Support for PDF version of pano
 
-- Image-to-Text translation for PDF version rather than just converting images to PDF
+- Image-to-Text translation for PDF version rather than just converting images to PDF (useful for datamining web for DeepLearning)
 
 - Support for parallel multiple tab capturing for full page capturing
 
 - Queueing multiple work orders for full page capturing
 
 - Support for feature to select and supress/delete away blocking or annoying webelement/div tag/iframes etc.. from a page
-  - This feature is similar to Inspect Element of major browsers ( right-click on a page). But they are non-programmer friendly. The version of this feature supported will be as simple as point and click.
+  - This feature is similar to Inspect Element of major browsers ( right-click on a page). But it is non-programmer friendly. The version of this feature supported will be as simple as point and click for non tech-savy users.
