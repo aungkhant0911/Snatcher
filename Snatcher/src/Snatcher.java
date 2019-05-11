@@ -5,7 +5,10 @@ import org.openqa.selenium.WebDriver;
 import org.bytedeco.javacpp.opencv_core.Mat;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.nio.file.Files;
 import java.util.List;
+import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -20,6 +23,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
+import org.openqa.selenium.JavascriptExecutor;
 
 
 /**
@@ -31,7 +35,8 @@ public class Snatcher extends Application {
     private  final Button bbrowser = new Button("Start Browser");     
     private  final Button bfull = new Button("Full Capture");
     private  final Button bpartial = new Button("Partial Capture");
-    private  WebDriver browser;
+    private  final Button binspection = new Button("Inspect Elements");
+    private  static WebDriver browser;
 
     
     
@@ -51,7 +56,8 @@ public class Snatcher extends Application {
         
         registerBrowserStartAction();
         registerFullSnatcherAction();
-        registerPartialSnatcherAction(stage);        
+        registerPartialSnatcherAction(stage);
+        registerInspectionAction();
         setupGUI(stage);
     }
     
@@ -62,13 +68,15 @@ public class Snatcher extends Application {
         VBox vb = new VBox(15);
         vb.setAlignment(Pos.CENTER);
         vb.setPadding(new Insets(10, 10, 10, 10));
-        vb.getChildren().addAll(bbrowser, bfull, bpartial);
+        vb.getChildren().addAll(bbrowser, bfull, bpartial, binspection);
         
         bbrowser.setPrefHeight(50);        
         bfull.setMaxWidth(Double.MAX_VALUE);
         bfull.setPrefHeight(30);
         bpartial.setMaxWidth(Double.MAX_VALUE);
         bpartial.setPrefHeight(30);
+        binspection.setMaxWidth(Double.MAX_VALUE);
+        binspection.setPrefHeight(30);
         
         bfull.setDisable(true);
         bpartial.setDisable(true);
@@ -90,6 +98,7 @@ public class Snatcher extends Application {
             bpartial.setDisable(false); 
             // open browser
             browser = WebController.getBrowser();
+           
         });
     }
     
@@ -99,27 +108,41 @@ public class Snatcher extends Application {
     private void registerFullSnatcherAction() {
         
         bfull.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> { 
-                            SnatcherInterface sncr = new FullSnatcher(browser, true);
-                            Mat panorama = sncr.producePanorama();
-                            new Thread(() -> sncr.savePanoramAsImage(panorama)).start();        
+                SnatcherInterface sncr = new FullSnatcher(browser, true);
+                Mat panorama = sncr.producePanorama();
+                new Thread(() -> sncr.savePanoramAsImage(panorama)).start();        
         });                    
     }
     
     
     // Partial Capture button. Run PartialSnatcher
     private void registerPartialSnatcherAction(Stage stage) {
-        
+        System.out.println(browser);
         bpartial.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> { 
                     // assign to functional interface the task we want  SelectionWindow to execute
-                    DelegatedTask task = (int[] d) -> {   
-                        SnatcherInterface sncr = new PartialSnatcher(browser, d, true);
-                        Mat panorama = sncr.producePanorama();
-                        new Thread(() -> sncr.savePanoramAsImage(panorama)).start();
-                    };
-                    // start selection window for user to specify the area with rectangular window
-                    SelectionWindow window = new SelectionWindow(task, stage );
-                    window.show();
+                DelegatedTask task = (int[] d) -> {   
+                    
+                    SnatcherInterface sncr = new PartialSnatcher(browser, d, true);
+                    Mat panorama = sncr.producePanorama();
+                    new Thread(() -> sncr.savePanoramAsImage(panorama)).start();
+                };
+                // start selection window for user to specify the area with rectangular window
+                SelectionWindow window = new SelectionWindow(task, stage );
+                window.show();
         });                    
+    }
+    
+    
+    
+    private void registerInspectionAction() {
+        
+        String[] files = {"Javascripts\\animation.js", "Javascripts\\inspection.js"};        
+        String inspection_code = WebController.concatJSfiles(files); 
+        
+        binspection.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
+                JavascriptExecutor injector = WebController.getJavaScriptController(browser);
+                injector.executeScript(inspection_code);
+        });
     }
     
     

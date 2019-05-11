@@ -3,8 +3,8 @@ An image utility class for stitching, concatination, matrix manipulation and col
 */
 import java.awt.image.BufferedImage;
 import java.awt.image.ColorConvertOp;
-
 import javax.imageio.ImageIO;
+
 import java.io.IOException;
 import java.io.BufferedOutputStream;
 import java.io.ByteArrayInputStream;
@@ -16,9 +16,6 @@ import java.util.logging.Logger;
 
 import org.bytedeco.javacv.Java2DFrameConverter;
 import org.bytedeco.javacv.OpenCVFrameConverter;
-
-import com.sun.image.codec.jpeg.JPEGImageDecoder;
-import com.sun.image.codec.jpeg.JPEGCodec;
 
 import static org.bytedeco.javacpp.opencv_core.Mat;
 import static org.bytedeco.javacpp.opencv_core.Rect;

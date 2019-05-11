@@ -13,6 +13,10 @@ import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 
 /**
@@ -58,6 +62,7 @@ public class WebController {
         // browser.get() inject javascriptExecutor to the current webpage user is viewing
         // WARNING: browser.getCurrentURL() doesn't work with multiple tab, at least without
         // changing the current code. User must be advised to use ONLY one page.
+        
         browser.get(browser.getCurrentUrl());
         return (JavascriptExecutor) browser;
     }    
@@ -94,5 +99,18 @@ public class WebController {
     public static final byte[] captureScreenshotOfCurrentView(JavascriptExecutor js) {
        // js.executeScript("setTimeout(new Date().getHours(), 1000)");
         return ((TakesScreenshot) js).getScreenshotAs(OutputType.BYTES);
-    }    
+    }
+
+    public static final String concatJSfiles(String[] paths) {
+        String inspection_code = "";
+        for(String filename : paths) {
+            
+             try {
+                 inspection_code += new Scanner( new File(filename), "UTF-8" ).useDelimiter("\\A").next();
+            } catch (FileNotFoundException ex) {
+                Logger.getLogger(WebController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        return inspection_code;
+    }
 }
