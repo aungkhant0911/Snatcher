@@ -18,6 +18,7 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Tooltip;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
@@ -35,7 +36,7 @@ public class Snatcher extends Application {
     private  final Button bbrowser = new Button("Start Browser");     
     private  final Button bfull = new Button("Full Capture");
     private  final Button bpartial = new Button("Partial Capture");
-    private  final Button binspection = new Button("Inspect Elements");
+    private  final Button binspection = new Button("Activate Inspection");
     private  static WebDriver browser;
 
     
@@ -78,6 +79,10 @@ public class Snatcher extends Application {
         binspection.setMaxWidth(Double.MAX_VALUE);
         binspection.setPrefHeight(30);
         
+        binspection.setTooltip(new Tooltip("Once the Inspection feature is activated on a webpage, bring page to focus:" +
+                                           "\n1) Press 'Q' to resume/suspend the feature." +
+                                           "\n2) Press 'E' to delete away a web element"));
+        
         bfull.setDisable(true);
         bpartial.setDisable(true);
         
@@ -117,7 +122,7 @@ public class Snatcher extends Application {
     
     // Partial Capture button. Run PartialSnatcher
     private void registerPartialSnatcherAction(Stage stage) {
-        System.out.println(browser);
+        
         bpartial.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> { 
                     // assign to functional interface the task we want  SelectionWindow to execute
                 DelegatedTask task = (int[] d) -> {   
@@ -135,13 +140,20 @@ public class Snatcher extends Application {
     
     
     private void registerInspectionAction() {
-        
-        String[] files = {"Javascripts\\animation.js", "Javascripts\\inspection.js"};        
-        String inspection_code = WebController.concatJSfiles(files); 
+              
+        String inspection_code = WebController.concatJSfiles(new String[]{"Javascripts\\animation.js", "Javascripts\\inspection.js"});
+        // create variable name for JavaScript, so that we can check later if a page is already injected with JS code by examining the existence of this variable
+        String variable =  "AuthoredByAungKhant";
         
         binspection.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
-                JavascriptExecutor injector = WebController.getJavaScriptController(browser);
-                injector.executeScript(inspection_code);
+               JavascriptExecutor injector = WebController.getJavaScriptController(browser);
+               if((boolean) injector.executeScript(String.format("return typeof window.%s === 'undefined';", variable))) {
+                   System.out.println("Not injected yet!");
+                   injector.executeScript(String.format("window.%s = 2019;", variable));
+                   injector.executeScript(inspection_code);
+               }
+               else
+                   System.out.println("Already injected !");
         });
     }
     
@@ -153,7 +165,6 @@ public class Snatcher extends Application {
         if (!output.isDirectory())
             output.mkdir();
         
-        System.out.println(output.isDirectory());
         File parts = new File(SnatcherInterface.OUTPUT_FOLDER + "\\" + SnatcherInterface.PARTS_FOLDER);
         if (!parts.isDirectory())
             parts.mkdir();

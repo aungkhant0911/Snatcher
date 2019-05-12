@@ -14,6 +14,7 @@ import org.openqa.selenium.TakesScreenshot;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.Base64;
 import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -63,7 +64,7 @@ public class WebController {
         // WARNING: browser.getCurrentURL() doesn't work with multiple tab, at least without
         // changing the current code. User must be advised to use ONLY one page.
         
-        browser.get(browser.getCurrentUrl());
+        //browser.get(browser.getCurrentUrl());
         return (JavascriptExecutor) browser;
     }    
     
@@ -101,10 +102,12 @@ public class WebController {
         return ((TakesScreenshot) js).getScreenshotAs(OutputType.BYTES);
     }
 
+    
+    
     public static final String concatJSfiles(String[] paths) {
-        String inspection_code = "";
-        for(String filename : paths) {
-            
+        
+        String inspection_code = "";        
+        for(String filename : paths) {            
              try {
                  inspection_code += new Scanner( new File(filename), "UTF-8" ).useDelimiter("\\A").next();
             } catch (FileNotFoundException ex) {

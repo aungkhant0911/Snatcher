@@ -71,7 +71,6 @@ public class FullSnatcher implements SnatcherInterface{
         // inject javascript engine to the page user is viewing
         JavascriptExecutor page = WebController.getJavaScriptController(browser);
         // give it some time. communication with webbrowser might take a while.
-        System.out.println("Refresh");
         takeANap(2000);
         
          
