@@ -28,8 +28,8 @@ As a desktop application, there are a couple of technologies involved in this pr
 
 As the saying "A picture says a thousand words" goes, I would have you watch the application in action.
 
-[![Snatcher](http://img.youtube.com/vi/yAPAQbPtAt4/0.jpg)](https://www.youtube.com/watch?v=yAPAQbPtAt4 "Snatcher")
-
+[![Capturing](http://img.youtube.com/vi/yAPAQbPtAt4/0.jpg)](https://www.youtube.com/watch?v=yAPAQbPtAt4 "Capturing")
+[![Inspecting](https://img.youtube.com/vi/P4pV6DCVgW4/0.jpg)](https://youtu.be/P4pV6DCVgW4 "Inspecting")
 
 
 
