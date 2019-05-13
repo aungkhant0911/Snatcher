@@ -33,11 +33,14 @@ As the saying "A picture says a thousand words" goes, I would have you watch the
 
 
 
-# Requirements
+# Dependencies
+ 
+- Chromedriver for Chrome version 74 (provided in Drivers folder)
 
-- Java 8
-- Make sure "Drivers" folder is intact with "chromedriver.exe" and "geckodriver.exe" inside.
-- All the necessary library files for Selenium and OpenCV are supplied with the application. So no futher steps required!
+Download and include the followings as libraries in the project.
+
+- Selenium WebDriver version 3.141
+- JavaCV version 1.4.3 
 
 
 
@@ -47,7 +50,8 @@ As the saying "A picture says a thousand words" goes, I would have you watch the
   - Use the very first default tab to navigate and do the capturing. Closing the default tab means restarting the browser.
   - Currently more than one tab is not supported. The application will only use the first tab.
   
-- Though Partial Snatcher allows user to leave focus off the application during capturing process, it may leave black selection         window, resulting in subsequent captured images as pitch black.
+- ***Update : The issue seems to originate from Javafx or graphic driver. Further investigation is needed.**
+Though Partial Snatcher allows user to leave focus off the application during capturing process, it may leave black selection         window, resulting in subsequent captured images as pitch black.
 
 
 
@@ -57,13 +61,25 @@ The followings are intended for the future releases, in no particular order.
 
 - Bug fixes
 
-- Support for PDF version of pano
+- Support for automatic PDF version of pano
 
-- Image-to-Text translation for PDF version rather than just converting images to PDF (useful for datamining web for Deep Learning)
+- Image-to-Text recognition for PDF (useful for datamining web for Deep Learning)
 
 - Support for parallel multiple tab capturing for full page capturing
 
 - Queueing multiple work orders for full page capturing
 
-- Support for a feature to select and supress/delete away blocking or annoying webelement/div tag/iframes etc.. from a page
+- ***Completed in version 1.1**: Support for a feature to select and supress/delete away blocking or annoying webelement/div tag/iframes etc.. from a page
   - This feature is similar to Inspect Element of major browsers ( right-click on a page). But as it stands currently, it is not non-programmer friendly. The version of the feature supported will be as simple as point and click for non tech-savy users.
+
+
+
+# Version 1.1
+
+- Support for element inspection is now available!
+
+  - highlight each inspected element as user hover the mouse cursor
+  
+  - animate the element (shakey) while it is in focus
+  
+  - instruction for the feature usage is provided as a tooltip on the "Activate Inspection" button.
