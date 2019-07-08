@@ -125,11 +125,12 @@ public class Snatcher extends Application {
         
         bpartial.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> { 
                     // assign to functional interface the task we want  SelectionWindow to execute
-                DelegatedTask task = (int[] d) -> {   
-                    
-                    SnatcherInterface sncr = new PartialSnatcher(browser, d, true);
-                    Mat panorama = sncr.producePanorama();
-                    new Thread(() -> sncr.savePanoramAsImage(panorama)).start();
+                DelegatedTask task = (int[] d) -> {  
+                    new Thread(() -> {
+                        SnatcherInterface sncr = new PartialSnatcher(browser, d, true);
+                        Mat panorama = sncr.producePanorama();
+                        sncr.savePanoramAsImage(panorama);  
+                    }).start();
                 };
                 // start selection window for user to specify the area with rectangular window
                 SelectionWindow window = new SelectionWindow(task, stage );
