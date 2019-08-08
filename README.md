@@ -27,8 +27,12 @@ As a desktop application, there are a couple of technologies involved in this pr
 # How It Works?
 
 As the saying "A picture says a thousand words" goes, I would have you watch the application in action.
+- **Showcasing Full & Partial Snatcher features (v1)**
 
 [![Capturing](v1.gif)](https://www.youtube.com/watch?v=yAPAQbPtAt4 "Capturing")
+
+- **Showcasing Inspection feature (v2)**
+
 [![Inspecting](v2.gif)](https://youtu.be/P4pV6DCVgW4 "Inspecting")
 
 
