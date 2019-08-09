@@ -26,7 +26,7 @@ As a desktop application, there are a couple of technologies involved in this pr
 
 # How It Works?
 
-As the saying "A picture says a thousand words" goes, I would have you watch the application in action.
+As the saying "A picture says a thousand words" goes, I would have you watch the application in action. **Click on each image to see a full demo on Youtube.**
 - **Showcasing Full & Partial Snatcher features (v1)**
 
 [![Capturing](v1.gif)](https://www.youtube.com/watch?v=yAPAQbPtAt4 "Capturing")
